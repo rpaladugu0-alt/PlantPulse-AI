@@ -69,3 +69,4 @@ The repository includes two production deployment paths:
 - `Dockerfile` packages the same application for Google Cloud Run or Amazon ECS Express Mode.
 
 The production server serves the compiled Vite frontend and the Express API from one container on the cloud-provided `PORT`. The JSON demonstration store is ephemeral in a stateless cloud container and is not intended for production records.
+# PlantPulse-AI
