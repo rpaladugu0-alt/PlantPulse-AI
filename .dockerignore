@@ -1,0 +1,9 @@
+node_modules
+frontend/node_modules
+backend/node_modules
+frontend/dist
+.git
+.env
+.DS_Store
+backend/data/plantpulse.runtime.json
+npm-debug.log*
