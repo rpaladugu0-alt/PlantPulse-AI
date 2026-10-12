@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 import { seedMachines, seedWorkOrders } from "../data/seed.js";
 
 const directory = path.dirname(fileURLToPath(import.meta.url));
-const file = path.resolve(directory, "../../data/plantpulse.runtime.json");
+const file = process.env.PLANTPULSE_STORE_FILE || path.resolve(directory, "../../data/plantpulse.runtime.json");
 
 function initialState() {
   return { machines: seedMachines, workOrders: seedWorkOrders, feedback: [], lastUpdated: new Date().toISOString() };

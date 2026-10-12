@@ -5,6 +5,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { analyzeCustomReading, analyzeMachine } from "./services/analyzer.js";
 import { readStore, writeStore } from "./services/store.js";
+import { findDuplicateActiveOrder, nextWorkOrderId } from "./services/workOrders.js";
 import { validateFeedback, validateReading, validateStatus, validateWorkOrder } from "./utils/validation.js";
 
 const app = express();
@@ -81,7 +82,13 @@ app.post("/api/work-orders", limitWrites, (req, res) => {
   const store = readStore();
   try {
     const { machineId, title, priority } = validateWorkOrder(req.body, new Set(store.machines.map((machine) => machine.id)));
-    const order = { id: `WO-${1049 + store.workOrders.length}`, machineId, title, priority, status: "Open", assignee: "Unassigned", createdAt: new Date().toISOString() };
+    const duplicate = findDuplicateActiveOrder(store.workOrders, machineId, title);
+    if (duplicate) return res.status(409).json({
+      code: "DUPLICATE_ACTIVE_ORDER",
+      error: `An active order already exists for this equipment and task (${duplicate.id}). Review it in Work Orders.`,
+      existingOrderId: duplicate.id
+    });
+    const order = { id: nextWorkOrderId(store.workOrders), machineId, title, priority, status: "Open", assignee: "Unassigned", createdAt: new Date().toISOString() };
     store.workOrders.unshift(order);
     writeStore(store);
     res.status(201).json(order);

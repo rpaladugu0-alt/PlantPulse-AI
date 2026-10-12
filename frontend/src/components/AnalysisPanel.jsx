@@ -21,7 +21,8 @@ export default function AnalysisPanel({ analysis, onClose, onFeedback }) {
       <button ref={closeRef} className="close-button" onClick={onClose} aria-label="Close analysis">×</button>
       <div className="eyebrow">AI-ASSISTED CONDITION ANALYSIS</div>
       <div className="analysis-heading"><div><h2 id="analysis-title">{analysis.machine.name}</h2><p>{analysis.machine.id} · {analysis.machine.line}</p></div><div className={`risk-badge ${analysis.risk.toLowerCase()}`}>{analysis.risk} risk · {analysis.riskScore}</div></div>
-      <div className="confidence"><span style={{ width: `${analysis.confidence}%` }} /><small>{analysis.confidence}% analysis confidence</small></div>
+      <div className="confidence"><span style={{ width: `${analysis.confidence}%` }} /><small>{analysis.confidence}% demonstration confidence</small></div>
+      <p className="disclaimer">Demonstration value, not a validated prediction probability.</p>
       <div className="signal-grid">{analysis.signals.map((signal) => <div className={`signal ${signal.level}`} key={signal.label}><span>{signal.label}</span><strong>{signal.value}{signal.unit}</strong><small>{signal.level}</small></div>)}</div>
       <h3>Why this was flagged</h3><ul className="reason-list">{analysis.reasons.map((reason) => <li key={reason}>{reason}</li>)}</ul>
       <div className="recommendation"><strong>Recommended next step</strong><p>{analysis.recommendation}</p></div>
